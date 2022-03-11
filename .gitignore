@@ -33,7 +33,8 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
-/images/pokeemon
+
+/images/pokemon
 
 # System Files
 .DS_Store
