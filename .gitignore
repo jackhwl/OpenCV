@@ -34,10 +34,10 @@ yarn-error.log
 testem.log
 /typings
 
-/images/pokemon
+/Practical_Python_andO-penCV/images/pokemon
 
 # System Files
-/images/.DS_Store
+/Practical_Python_andO-penCV/images/.DS_Store
 .DS_Store
 Thumbs.db
 images/.DS_Store
