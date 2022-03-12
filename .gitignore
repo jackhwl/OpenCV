@@ -37,5 +37,7 @@ testem.log
 /images/pokemon
 
 # System Files
+/images/.DS_Store
 .DS_Store
 Thumbs.db
+images/.DS_Store
