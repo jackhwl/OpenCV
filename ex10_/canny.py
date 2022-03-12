@@ -28,6 +28,10 @@ cv2.imshow("Blurred", image)
 # the intensities are "connected". In this case, any gradient
 # values below 30 are considered non-edges whereas any value
 # above 150 are considered edges.
-canny = cv2.Canny(image, 30, 150) 
+canny = cv2.Canny(image, 10, 200) 
 cv2.imshow("Canny", canny)
+canny = cv2.Canny(image, 240, 250) 
+cv2.imshow("Canny2", canny)
+canny = cv2.Canny(image, 200, 250) 
+cv2.imshow("Canny3", canny)
 cv2.waitKey(0)
