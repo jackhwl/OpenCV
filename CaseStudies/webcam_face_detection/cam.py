@@ -37,7 +37,7 @@ while True:
 		break
 
 	# resize the frame and convert it to grayscale
-	frame = imutils.resize(frame, width = 300)
+	frame = imutils.resize(frame, width = 600)
 	gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
 	# detect faces in the image and then clone the frame
