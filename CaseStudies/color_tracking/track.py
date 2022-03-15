@@ -14,8 +14,10 @@ args = vars(ap.parse_args())
 
 # define the upper and lower boundaries for a color
 # to be considered "blue"
-blueLower = np.array([100, 67, 0], dtype = "uint8")
-blueUpper = np.array([255, 128, 50], dtype = "uint8")
+blueLower = np.array([44, 127, 77], dtype = "uint8")
+blueUpper = np.array([105, 255, 99], dtype = "uint8")
+#blueLower = np.array([22, 0, 0], dtype = "uint8")
+#blueUpper = np.array([238, 205, 238], dtype = "uint8")
 
 if not args.get("video", False):
     camera = cv2.VideoCapture(0)

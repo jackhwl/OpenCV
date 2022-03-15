@@ -97,6 +97,8 @@ def main():
         if cv2.waitKey(1) & 0xFF is ord('q'):
             break
 
+    print(thresh, v1_min, v2_min, v3_min, v1_max, v2_max, v3_max)
+
 
 if __name__ == '__main__':
     main()
