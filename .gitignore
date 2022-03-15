@@ -42,3 +42,4 @@ testem.log
 Thumbs.db
 images/.DS_Store
 *.mov
+*.avi

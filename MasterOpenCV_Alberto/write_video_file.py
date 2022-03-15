@@ -21,12 +21,12 @@ print(fps, frame_width)
 # FourCC is a 4-byte code used to specify the video codec and it is platform dependent!
 # In this case, define the codec XVID
 #fourcc = cv2.VideoWriter_fourcc('X', 'V', 'I', 'D')
-fourcc = cv2.VideoWriter_fourcc('I', '4', '2', '0')
-#fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+#fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
+fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
 # Create VideoWriter object. We use the same properties as the input camera.
 # Last argument is False to write the video in grayscale. True otherwise (write the video in color)
-out_gray = cv2.VideoWriter(args.output_video_path, fourcc, int(fps), int(frame_width))
+out_gray = cv2.VideoWriter(args.output_video_path, fourcc, int(fps), (int(frame_width), int(frame_height)))
 
 # Read until video is completed or 'q' is pressed
 while capture.isOpened():
