@@ -26,7 +26,7 @@ fourcc = cv2.VideoWriter_fourcc(*'mp4v')
 
 # Create VideoWriter object. We use the same properties as the input camera.
 # Last argument is False to write the video in grayscale. True otherwise (write the video in color)
-out_gray = cv2.VideoWriter(args.output_video_path, fourcc, int(fps), (int(frame_width), int(frame_height)))
+out_gray = cv2.VideoWriter(args.output_video_path, fourcc, int(fps), (int(frame_width), int(frame_height)), False)
 
 # Read until video is completed or 'q' is pressed
 while capture.isOpened():
@@ -37,13 +37,16 @@ while capture.isOpened():
         # Convert the frame to grayscale
         gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # Write the grayscale frame to the video
+
         out_gray.write(gray_frame)
         # We show the frame (this is not necessary to write the video)
         # But we show it until 'q' is pressed
         cv2.imshow('gray', gray_frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+        #print('ret is true')
     else:
+        #print('ret is false')
         break
 
 # Release everything:
