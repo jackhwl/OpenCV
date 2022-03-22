@@ -55,7 +55,7 @@ def equalize_hist_color_hsv(img):
 
 
 # Create the dimensions of the figure and set title:
-plt.figure(figsize=(18, 14))
+plt.figure(figsize=(18, 10))
 plt.suptitle("Color histogram equalization with cv2.equalizeHist() in the V channel", fontsize=14, fontweight='bold')
 
 # Load the original image and convert it to grayscale
