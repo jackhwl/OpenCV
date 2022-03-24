@@ -13,7 +13,7 @@ def show_img_with_matplotlib(color_img, title, pos):
     # Convert BGR image to RGB
     img_RGB = color_img[:, :, ::-1]
 
-    ax = plt.subplot(3, 2, pos)
+    ax = plt.subplot(4, 2, pos)
     plt.imshow(img_RGB)
     plt.title(title)
     plt.axis('off')
@@ -22,7 +22,7 @@ def show_img_with_matplotlib(color_img, title, pos):
 def show_hist_with_matplotlib_gray(hist, title, pos, color, t=-1):
     """Shows the histogram using matplotlib capabilities"""
 
-    ax = plt.subplot(3, 2, pos)
+    ax = plt.subplot(4, 2, pos)
     # plt.title(title)
     plt.xlabel("bins")
     plt.ylabel("number of pixels")
@@ -64,6 +64,8 @@ show_img_with_matplotlib(cv2.cvtColor(th1, cv2.COLOR_GRAY2BGR),
 show_hist_with_matplotlib_gray(hist2, "grayscale histogram", 5, 'm', ret2)
 show_img_with_matplotlib(cv2.cvtColor(th2, cv2.COLOR_GRAY2BGR),
                          "Otsu's binarization (after applying a Gaussian filter)", 6)
+show_img_with_matplotlib(cv2.cvtColor(gray_image_blurred, cv2.COLOR_GRAY2BGR),
+                         "Grey image apply Gaussian filter", 8)
 
 # Show the Figure:
 plt.show()
