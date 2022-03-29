@@ -1,42 +1,3 @@
-#!/usr/bin/env python
-# Software License Agreement (BSD License)
-#
-# Copyright (c) 2012, Philipp Wagner <bytefish[at]gmx[dot]de>.
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions
-# are met:
-#
-#  * Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
-#  * Redistributions in binary form must reproduce the above
-#    copyright notice, this list of conditions and the following
-#    disclaimer in the documentation and/or other materials provided
-#    with the distribution.
-#  * Neither the name of the author nor the names of its
-#    contributors may be used to endorse or promote products derived
-#    from this software without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
-# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
-# COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
-# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-# LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-# ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-# POSSIBILITY OF SUCH DAMAGE.
-
-# ------------------------------------------------------------------------------------------------
-# Note:
-# When using the FaceRecognizer interface in combination with Python, please stick to Python 2.
-# Some underlying scripts like create_csv will not work in other versions, like Python 3.
-# ------------------------------------------------------------------------------------------------
-
 import os
 import sys
 import cv2
@@ -73,7 +34,6 @@ def read_images(path, sz=None):
     c = 0
     X,y = [], []
     for dirname, dirnames, filenames in os.walk(path):
-        #print(dirname, dirnames, filenames)
         for subdirname in dirnames:
             subject_path = os.path.join(dirname, subdirname)
             for filename in os.listdir(subject_path):
@@ -82,7 +42,6 @@ def read_images(path, sz=None):
                         continue
                     #print(filename)
                     filepath = os.path.join(subject_path, filename)
-                    print(os.path.join(subject_path, filename))
                     im = cv2.imread(os.path.join(subject_path, filename), cv2.IMREAD_GRAYSCALE)
                     if (im is None):
                         print("image " + filepath + " is none")
@@ -97,14 +56,58 @@ def read_images(path, sz=None):
                 except:
                     print("Unexpected error:", sys.exc_info()[0])
                     raise
-            print('c= ',c)
             c = c+1
     return [X,y]
 
+def face_rec():
+    names = ['Lillian', 'Jack', 'William']
+    if len(sys.argv) < 2:
+        print("USAGE: facerec_demo.py </path/to/images> [</path/to/store/images/at>]")
+        sys.exit()
+
+    [X,y] = read_images(sys.argv[1])
+    print(X, '============', y)
+    cv2.waitKey(int(1000 / 12))
+    
+    y = np.asarray(y, dtype=np.int32)
+    
+    if len(sys.argv) == 3:
+        out_dir = sys.argv[2]
+    
+    model = cv2.face.EigenFaceRecognizer_create()
+    model.train(np.asarray(X), np.asarray(y))
+    camera = cv2.VideoCapture(0)
+    face_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_default.xml')
+    while (True):
+      read, img = camera.read()
+      faces = face_cascade.detectMultiScale(img, 1.3, 5)
+      for (x, y, w, h) in faces:
+        img = cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        roi = gray[x:x+w, y:y+h]
+        try:
+            roi = cv2.resize(roi, (200, 200), interpolation=cv2.INTER_LINEAR)
+            print(roi.shape)
+            params = model.predict(roi)
+            print("Label: %s, Confidence: %.2f" % (params[0], params[1]))
+            cv2.putText(img, names[params[0]], (x, y - 20), cv2.FONT_HERSHEY_SIMPLEX, 1, 255, 2)
+            if (params[0] == 0):
+                cv2.imwrite('face_rec.jpg', img)
+        except:
+            continue
+      cv2.imshow("camera", img)
+      if cv2.waitKey(int(1000 / 12)) & 0xff == ord("q"):
+        break
+    cv2.destroyAllWindows()
+
 if __name__ == "__main__":
+    face_rec()
+
+def original():
     # This is where we write the images, if an output_dir is given
     # in command line:
     out_dir = None
+    names = ['Lillian', 'Jack', 'William']
     # You'll need at least a path to your image data, please see
     # the tutorial coming with this source code on how to prepare
     # your image data:
@@ -113,7 +116,6 @@ if __name__ == "__main__":
         sys.exit()
     # Now read in the image data. This must be a valid path!
     [X,y] = read_images(sys.argv[1])
-    #print(X, y)
     # Convert labels to 32bit integers. This is a workaround for 64bit machines,
     # because the labels will truncated else. This will be fixed in code as
     # soon as possible, so Python users don't need to know about this.
@@ -125,8 +127,8 @@ if __name__ == "__main__":
     # Create the Eigenfaces model. We are going to use the default
     # parameters for this simple example, please read the documentation
     # for thresholding:
+    #model = cv2.face.createLBPHFaceRecognizer()
     model = cv2.face.EigenFaceRecognizer_create()
-    #model = cv2.face.LBPHFaceRecognizer_create()
     # Read
     # Learn the model. Remember our function returns Python lists,
     # so we use np.asarray to turn them into NumPy lists to make
@@ -140,6 +142,24 @@ if __name__ == "__main__":
     #
     # model.predict is going to return the predicted label and
     # the associated confidence:
+    camera = cv2.VideoCapture(0)
+    face_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_default.xml')
+    while (True):
+      read, img = camera.read()
+      faces = face_cascade.detectMultiScale(img, 1.3, 5)
+      for (x, y, w, h) in faces:
+        img = cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        roi = gray[x:x+w, y:y+h]
+        roi = cv2.resize(roi, (200, 200), interpolation=cv2.INTER_LINEAR)
+        print(roi.shape)
+        params = model.predict(roi)
+        print("Label: %s, Confidence: %.2f" % (params[0], params[1]))
+        cv2.putText(img, names[params[0]], (x,y - 20), cv2.FONT_HERSHEY_SIMPLEX, 1, 255, 3)
+      cv2.imshow("camera", img)
+      if cv2.waitKey(1000 / 12) & 0xff == ord("q"):
+        break
+
     [p_label, p_confidence] = model.predict(np.asarray(X[0]))
     # Print it:
     print("Predicted label = %d (confidence=%.2f)" % (p_label, p_confidence))
@@ -152,9 +172,7 @@ if __name__ == "__main__":
     # You can see the available parameters with getParams():
     #print(model.getParams())
     # Now let's get some data:
-    #mean = model.getMat("mean")
     mean = model.getMean()
-    #print('mean=', mean)
     eigenvectors = model.getEigenVectors()
     # We'll save the mean, by first normalizing it:
     mean_norm = normalize(mean, 0, 255, dtype=np.uint8)
@@ -178,3 +196,5 @@ if __name__ == "__main__":
     # Show the images:
     if out_dir is None:
         cv2.waitKey(0)
+
+    cv2.destroyAllWindows()

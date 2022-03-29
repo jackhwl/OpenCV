@@ -17,7 +17,7 @@ def generate():
         
         f = cv2.resize(gray[y:y+h, x:x+w], (200, 200))
 
-        cv2.imwrite('./data/jack/%s.pgm' % str(count), f)
+        cv2.imwrite('./data/at/lillian/%s.pgm' % str(count), f)
         print(count)
         count += 1
 
