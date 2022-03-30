@@ -82,7 +82,10 @@ def face_rec():
     if len(sys.argv) == 3:
         out_dir = sys.argv[2]
     
-    model = cv2.face.EigenFaceRecognizer_create()
+    #model = cv2.face.EigenFaceRecognizer_create()
+    #model = cv2.face.FisherFaceRecognizer_create()
+    model = cv2.face.LBPHFaceRecognizer_create()
+
     model.train(np.asarray(X), np.asarray(y))
     camera = cv2.VideoCapture(0)
     face_cascade = cv2.CascadeClassifier('./cascades/haarcascade_frontalface_default.xml')
