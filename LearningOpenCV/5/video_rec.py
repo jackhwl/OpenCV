@@ -18,6 +18,13 @@ def normalize(X, low, high, dtype=None):
     return np.asarray(X, dtype=dtype)
 
 
+def getIndex(x):
+    return {
+        'jack': 0,
+        'lillian': 1,
+        'william': 2
+    }.get(x, 0)
+
 def read_images(path, sz=None):
     """Reads the images in a given folder, resizes images on the fly if size is given.
 
@@ -35,6 +42,7 @@ def read_images(path, sz=None):
     X,y = [], []
     for dirname, dirnames, filenames in os.walk(path):
         for subdirname in dirnames:
+            c = getIndex(subdirname)
             subject_path = os.path.join(dirname, subdirname)
             for filename in os.listdir(subject_path):
                 try:
@@ -56,17 +64,17 @@ def read_images(path, sz=None):
                 except:
                     print("Unexpected error:", sys.exc_info()[0])
                     raise
-            c = c+1
+            #c = c+1
     return [X,y]
 
 def face_rec():
-    names = ['Lillian', 'Jack', 'William']
+    names = ['Jack', 'Lillian', 'William']
     if len(sys.argv) < 2:
         print("USAGE: facerec_demo.py </path/to/images> [</path/to/store/images/at>]")
         sys.exit()
 
     [X,y] = read_images(sys.argv[1])
-    print(X, '============', y)
+    #print(X, '============', y)
     cv2.waitKey(int(1000 / 12))
     
     y = np.asarray(y, dtype=np.int32)
@@ -107,7 +115,7 @@ def original():
     # This is where we write the images, if an output_dir is given
     # in command line:
     out_dir = None
-    names = ['Lillian', 'Jack', 'William']
+    names = ['Jack', 'Lillian', 'William']
     # You'll need at least a path to your image data, please see
     # the tutorial coming with this source code on how to prepare
     # your image data:
