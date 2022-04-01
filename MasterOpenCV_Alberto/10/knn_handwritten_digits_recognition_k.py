@@ -1,10 +1,12 @@
 """
-Handwritten digits recognition using KNN and raw pixels as features
+Handwritten digits recognition using KNN and raw pixels as features and varying k
 """
 
 # Import required packages:
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
+from collections import defaultdict
 
 # Constants:
 SIZE_IMAGE = 20
@@ -48,15 +50,14 @@ def raw_pixels(img):
 
 # Load all the digits and the corresponding labels:
 digits, labels = load_digits_and_labels('digits.png')
-#print(digits, '----',labels)
+
 # Shuffle data
 # Constructs a random number generator:
-rand = np.random.RandomState(5634)
+rand = np.random.RandomState(1234)
 # Randomly permute the sequence:
 shuffle = rand.permutation(len(digits))
 digits, labels = digits[shuffle], labels[shuffle]
 
-#print(shuffle, '===',digits, '----',labels)
 # Compute the descriptors for all the images.
 # In this case, the raw pixels are the feature descriptors
 raw_descriptors = []
@@ -74,11 +75,30 @@ print('Training KNN model - raw pixels as features')
 knn = cv2.ml.KNearest_create()
 knn.train(raw_descriptors_train, cv2.ml.ROW_SAMPLE, labels_train)
 
-# Test the created model:
-k = 5
-ret, result, neighbours, dist = knn.findNearest(raw_descriptors_test, k)
-print(result, '---', labels_test, '+++', neighbours, '===', dist)
-# Compute the accuracy:
-acc = get_accuracy(result, labels_test)
-print("Accuracy: {}".format(acc))
+# Create a dictionary to store the accuracy when testing:
+results = defaultdict(list)
 
+for k in np.arange(1, 10):
+    ret, result, neighbours, dist = knn.findNearest(raw_descriptors_test, k)
+    acc = get_accuracy(result, labels_test)
+    print(" {}".format("%.2f" % acc))
+    results['50'].append(acc)
+
+# Show all results using matplotlib capabilities:
+# Create the dimensions of the figure and set title:
+fig = plt.figure(figsize=(12, 5))
+plt.suptitle("k-NN handwritten digits recognition", fontsize=14, fontweight='bold')
+fig.patch.set_facecolor('silver')
+
+ax = plt.subplot(1, 1, 1)
+ax.set_xlim(0, 10)
+dim = np.arange(1, 10)
+
+for key in results:
+    ax.plot(dim, results[key], linestyle='--', marker='o', label="50%")
+
+plt.legend(loc='upper left', title="% training")
+plt.title('Accuracy of the K-NN model varying k')
+plt.xlabel("number of k")
+plt.ylabel("accuracy")
+plt.show()
