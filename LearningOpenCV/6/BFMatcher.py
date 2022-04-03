@@ -3,9 +3,8 @@ import cv2
 from matplotlib import pyplot as plt
 
 img1 = cv2.imread('../images/manowar_logo.png',cv2.IMREAD_GRAYSCALE)
-img2 = cv2.imread('../images/manowar_single.jpg',
+img2 = cv2.imread('../images/manowar_single.jpg', cv2.IMREAD_GRAYSCALE)
 
-cv2.IMREAD_GRAYSCALE)
 orb = cv2.ORB_create()
 kp1, des1 = orb.detectAndCompute(img1,None)
 kp2, des2 = orb.detectAndCompute(img2,None)
