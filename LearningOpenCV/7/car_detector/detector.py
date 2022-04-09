@@ -30,14 +30,14 @@ def car_detector():
   matcher = get_flann_matcher()
   #extract_bow = get_bow_extractor(extract, matcher)
   print("building BOWKMeansTrainer...")
-  bow_kmeans_trainer = cv2.BOWKMeansTrainer(12)
+  bow_kmeans_trainer = cv2.BOWKMeansTrainer(1000)
   extract_bow = cv2.BOWImgDescriptorExtractor(extract, matcher)
 
   print("adding features to trainer")
   for i in range(SAMPLES):
     print(i)
     bow_kmeans_trainer.add(extract_sift(path(pos,i), extract, detect))
-    #bow_kmeans_trainer.add(extract_sift(path(neg,i), extract, detect))
+    bow_kmeans_trainer.add(extract_sift(path(neg,i), extract, detect))
     
   vocabulary = bow_kmeans_trainer.cluster()
   extract_bow.setVocabulary(vocabulary)
