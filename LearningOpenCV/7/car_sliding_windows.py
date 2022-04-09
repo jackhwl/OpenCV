@@ -51,7 +51,7 @@ for resized in pyramid(img, scaleFactor):
 
 windows = np.array(rectangles)
 boxes = nms(windows, 0.25)
-
+print(rectangles)
 
 for (x, y, x2, y2, score) in boxes:
   print(x, y, x2, y2, score)

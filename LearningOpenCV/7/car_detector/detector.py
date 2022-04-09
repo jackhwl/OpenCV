@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 datapath = "/Users/wenlin/RubikCube/CarData/TrainImages/"
-SAMPLES = 400
+SAMPLES = 139
 
 def path(cls,i):
     return "%s/%s%d.pgm"  % (datapath,cls,i+1)
@@ -30,7 +30,7 @@ def car_detector():
   matcher = get_flann_matcher()
   #extract_bow = get_bow_extractor(extract, matcher)
   print("building BOWKMeansTrainer...")
-  bow_kmeans_trainer = cv2.BOWKMeansTrainer(1000)
+  bow_kmeans_trainer = cv2.BOWKMeansTrainer(12)
   extract_bow = cv2.BOWImgDescriptorExtractor(extract, matcher)
 
   print("adding features to trainer")
