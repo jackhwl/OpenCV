@@ -28,7 +28,8 @@ def show_detection(image, faces):
 
 
 # Load image and convert to grayscale:
-img = cv2.imread("test_face_detection.jpg")
+#img = cv2.imread("test_face_detection.jpg")
+img = cv2.imread("640.webp")
 gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
 # Load cascade classifiers:
