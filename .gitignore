@@ -46,3 +46,4 @@ images/.DS_Store
 images/
 data/
 CarData/
+*.dat
