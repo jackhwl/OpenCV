@@ -40,11 +40,18 @@ def face_encodings(face_image, number_of_times_to_upsample=1, num_jitters=1):
 
 
 # Load images:
-known_image_1 = cv2.imread("jared_1.jpeg")
-known_image_2 = cv2.imread("jared_2.jpeg")
+#known_image_1 = cv2.imread("jared_1.jpeg")
+#known_image_2 = cv2.imread("jared_2.jpeg")
+#known_image_3 = cv2.imread("jared_3.jpeg")
+#known_image_4 = cv2.imread("obama.jpeg")
+#unknown_image = cv2.imread("jared_4.jpeg")
+
+known_image_1 = cv2.imread("lillian.jpeg")
+known_image_2 = cv2.imread("jack.jpeg")
 known_image_3 = cv2.imread("jared_3.jpeg")
 known_image_4 = cv2.imread("obama.jpeg")
-unknown_image = cv2.imread("jared_4.jpeg")
+unknown_image = cv2.imread("william.jpeg")
+
 
 # Convert image from BGR (OpenCV format) to RGB (dlib format):
 known_image_1 = known_image_1[:, :, ::-1]
@@ -54,7 +61,7 @@ known_image_4 = known_image_4[:, :, ::-1]
 unknown_image = unknown_image[:, :, ::-1]
 
 # Crate names for each loaded image:
-names = ["jared_1.jpeg", "jared_2.jpeg", "jared_3.jpeg", "obama.jpeg"]
+names = ["william.jpeg", "jack.jpeg", "jared_3.jpeg", "obama.jpeg"]
 
 # Create the encodings:
 known_image_1_encoding = face_encodings(known_image_1)[0]
