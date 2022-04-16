@@ -49,3 +49,4 @@ CarData/
 *.dat
 *.caffemodel
 *.prototxt
+logs/
