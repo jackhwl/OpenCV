@@ -36,7 +36,9 @@ image = cv2.imread("object_detection_test_image.png")
 
 # Get the output layer names:
 layer_names = net.getLayerNames()
-layer_names = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
+ab = net.getUnconnectedOutLayers()
+print('layer_names=', layer_names)
+layer_names = [layer_names[i - 1] for i in net.getUnconnectedOutLayers()]
 
 # Create the blob with a size of (416, 416), swap red and blue channels
 # and also a scale factor of 1/255 = 0,003921568627451:
