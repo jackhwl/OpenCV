@@ -47,3 +47,5 @@ images/
 data/
 CarData/
 *.dat
+*.caffemodel
+*.prototxt
