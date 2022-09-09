@@ -8,7 +8,6 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 function runAnalysis() {
     const testSetSize = 10
     const [testSet, trainingSet] = splitDataset(outputs, testSetSize)
-    
     // let numberCorrect = 0
     // for (let i=0; i < testSet.length; i++) {
     //     const bucket = knn(trainingSet, testSet[i][0])
@@ -45,7 +44,7 @@ function distance(pointA, pointB) {
 }
 
 function splitDataset(data, testCount) {
-    const shuffled = _.shuffl(data)
+    const shuffled = _.shuffle(data)
     
     const testSet = _.slice(shuffled, 0, testCount)
     const trainingSet = _.slice(shuffled, testCount)
