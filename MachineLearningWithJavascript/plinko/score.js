@@ -6,7 +6,7 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 
 function runAnalysis() {
     const testSetSize = 10
-    const [testSet, trainingSet] = splitDataset(outputs, testSetSize)
+    const [testSet, trainingSet] = splitDataset(minMax(outputs, 3), testSetSize)
     // let numberCorrect = 0
     // for (let i=0; i < testSet.length; i++) {
     //     const bucket = knn(trainingSet, testSet[i][0])
