@@ -5,8 +5,8 @@ function onScoreUpdate(dropPosition, bounciness, size, bucketLabel) {
 }
 
 function runAnalysis() {
-    const testSetSize = 10
-    const [testSet, trainingSet] = splitDataset(minMax(outputs, 3), testSetSize)
+    const testSetSize = 100
+    const k = 10
     // let numberCorrect = 0
     // for (let i=0; i < testSet.length; i++) {
     //     const bucket = knn(trainingSet, testSet[i][0])
@@ -14,14 +14,16 @@ function runAnalysis() {
     //         numberCorrect++
     //     }
     // }
-    _.range(1, 15).forEach(k => {
+    _.range(0, 3).forEach(feature => {
+        const data = _.map(outputs, row => [row[feature], _.last(row)])
+        const [testSet, trainingSet] = splitDataset(minMax(data, 1), testSetSize)
         const accuracy = _.chain(testSet)
-            .filter(testPoint => knn(trainingSet, _.initial(testPoint), k) === testPoint[3])
+            .filter(testPoint => knn(trainingSet, _.initial(testPoint), k) === _.last(testPoint))
             .size()
             .divide(testSetSize)
             .value()
 
-        console.log('For k of ', k, 'accuracy is :', accuracy)
+        console.log('For feature of ', feature, 'accuracy is :', accuracy)
     })
 }
 
