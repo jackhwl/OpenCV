@@ -3,8 +3,12 @@ const tf = require('@tensorflow/tfjs')
 const loadCSV = require('./load-csv')
 
 function knn(features, labels, predictionPoint, k) {
-    return features
-    .sub(predictionPoint)
+    const { mean, variance } = tf.moments(features, 0)
+    const scaledFeatures = features.sub(mean).div(variance.pow(0.5))
+    const scaledPrediction = predictionPoint.sub(mean).div(variance.pow(0.5))
+
+    return scaledFeatures
+    .sub(scaledPrediction)
     .pow(2)
     .sum(1)
     .pow(0.5)
@@ -26,6 +30,7 @@ let { features, labels, testFeatures, testLabels } = loadCSV('kc_house_data.csv'
 features = tf.tensor(features)
 labels = tf.tensor(labels)
 
+//console.log('testFeatures=', testFeatures)
 testFeatures.forEach((testPoint, i) => {
     const result = knn(features, labels, tf.tensor(testPoint), 10)
     const err = (testLabels[i][0] - result) / testLabels[i][0]
