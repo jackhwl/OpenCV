@@ -15,7 +15,10 @@ class LinearRegression {
         const differences = currentGuesses.sub(this.labels)
 
         const slopes = this.features.transpose().matMul(differences).div(this.features.shape[0])
+
+        this.weights = this.weights.sub(slopes.mul(this.options.learningRate))
     }
+
     gradientDescent0() {
         const currentGuessesForMPG = this.features.map(row => this.m * row[0] + this.b)
         const bSlope = _.sum(currentGuessesForMPG.map((guess, i) => guess - this.labels[i][0])) * 2 / this.features.length
