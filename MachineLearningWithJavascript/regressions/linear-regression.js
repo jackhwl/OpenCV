@@ -7,7 +7,7 @@ class LinearRegression {
 
         this.options = Object.assign({ learningRate: 0.1, iterations: 1000 }, options)
 
-        this.weights = tf.zeros([2, 1])
+        this.weights = tf.zeros([this.features.shape[1], 1])
     }
     gradientDescent() {
         const currentGuesses = this.features.matMul(this.weights)
