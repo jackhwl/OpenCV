@@ -4,6 +4,7 @@ class LinearRegression {
     constructor(features, labels, options) {
         this.features = this.processFeatures(features)
         this.labels = tf.tensor(labels)
+        this.mseHistory = []
 
         this.options = Object.assign({ learningRate: 0.1, iterations: 1000 }, options)
 
@@ -30,6 +31,7 @@ class LinearRegression {
     train() {
         for (let i=0; i<this.options.iterations; i++) {
             this.gradientDescent()
+            this.recordMSE()
         }
     }
 
@@ -65,6 +67,12 @@ class LinearRegression {
         this.variance = variance
 
         return features.sub(mean).div(variance.pow(0.5))
+    }
+
+    recordMSE() {
+        const mse = this.features.matMul(this.weights).sub(this.labels).pow(2).sum().div(this.features.shape[0]).get()
+
+        this.mseHistory.push(mse)
     }
 }
 
