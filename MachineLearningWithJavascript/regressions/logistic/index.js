@@ -8,28 +8,32 @@ let { features, labels, testFeatures, testLabels } = loadCSV('../data/cars.csv',
     shuffle: true,
     splitTest: 50,
     dataColumns: ['horsepower', 'displacement', 'weight'],
-    labelColumns: ['passedemissions']
+    labelColumns: ['passedemissions'],
+    converters: {
+        passedemissions: (value) => value === 'TRUE' ? 1 : 0
+    }
 })
 
-const regression = new LinearRegression(features, labels, {
-    learningRate: .1,
-    iterations: 3,
-    batchSize: 10
-})
+console.log(labels)
+// const regression = new LinearRegression(features, labels, {
+//     learningRate: .1,
+//     iterations: 3,
+//     batchSize: 10
+// })
 
-regression.train()
-//regression.features.print()
-const r2 = regression.test(testFeatures, testLabels)
+// regression.train()
+// //regression.features.print()
+// const r2 = regression.test(testFeatures, testLabels)
 
-plot({
-    x: regression.mseHistory.reverse(),
-    xLabel: 'Iteration #',
-    yLabel: 'Mean Squared Error'
-})
+// plot({
+//     x: regression.mseHistory.reverse(),
+//     xLabel: 'Iteration #',
+//     yLabel: 'Mean Squared Error'
+// })
 
-console.log('r2=', r2)
+// console.log('r2=', r2)
 
-regression.predict([
-    [120, 2, 380]
-]).print()
-//console.log('Updated M is:', regression.weights.get(1, 0), 'Updated B is:', regression.weights.get(0, 0))
+// regression.predict([
+//     [120, 2, 380]
+// ]).print()
+// //console.log('Updated M is:', regression.weights.get(1, 0), 'Updated B is:', regression.weights.get(0, 0))
