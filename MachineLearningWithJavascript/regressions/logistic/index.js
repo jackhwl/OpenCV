@@ -7,8 +7,8 @@ const plot = require('node-remote-plot')
 let { features, labels, testFeatures, testLabels } = loadCSV('../data/cars.csv', {
     shuffle: true,
     splitTest: 50,
-    dataColumns: ['horsepower', 'weight', 'displacement'],
-    labelColumns: ['mpg']
+    dataColumns: ['horsepower', 'displacement', 'weight'],
+    labelColumns: ['passedemissions']
 })
 
 const regression = new LinearRegression(features, labels, {
