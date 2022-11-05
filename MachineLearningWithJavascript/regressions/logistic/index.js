@@ -1,7 +1,7 @@
 require('@tensorflow/tfjs-node')
 const tf = require('@tensorflow/tfjs')
 const loadCSV = require('../load-csv')
-const LinearRegression = require('./logistic-regression')
+const LogisticRegression = require('./logistic-regression')
 const plot = require('node-remote-plot')
 
 let { features, labels, testFeatures, testLabels } = loadCSV('../data/cars.csv', {
@@ -14,14 +14,13 @@ let { features, labels, testFeatures, testLabels } = loadCSV('../data/cars.csv',
     }
 })
 
-console.log(labels)
-// const regression = new LinearRegression(features, labels, {
-//     learningRate: .1,
-//     iterations: 3,
-//     batchSize: 10
-// })
+const regression = new LogisticRegression(features, labels, {
+    learningRate: .5,
+    iterations: 100,
+    batchSize: 50
+})
 
-// regression.train()
+regression.train()
 // //regression.features.print()
 // const r2 = regression.test(testFeatures, testLabels)
 
@@ -33,7 +32,8 @@ console.log(labels)
 
 // console.log('r2=', r2)
 
-// regression.predict([
-//     [120, 2, 380]
-// ]).print()
+regression.predict([
+    [130, 307, 1.75],
+    [88, 97, 1.065]
+]).print()
 // //console.log('Updated M is:', regression.weights.get(1, 0), 'Updated B is:', regression.weights.get(0, 0))
