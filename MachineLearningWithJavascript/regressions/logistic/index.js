@@ -22,7 +22,7 @@ const regression = new LogisticRegression(features, labels, {
 
 regression.train()
 // //regression.features.print()
-// const r2 = regression.test(testFeatures, testLabels)
+console.log(regression.test(testFeatures, testLabels))
 
 // plot({
 //     x: regression.mseHistory.reverse(),
@@ -32,8 +32,5 @@ regression.train()
 
 // console.log('r2=', r2)
 
-regression.predict([
-    [130, 307, 1.75],
-    [88, 97, 1.065]
-]).print()
+
 // //console.log('Updated M is:', regression.weights.get(1, 0), 'Updated B is:', regression.weights.get(0, 0))
