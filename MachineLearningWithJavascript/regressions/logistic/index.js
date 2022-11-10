@@ -25,11 +25,10 @@ regression.train()
 // //regression.features.print()
 console.log(regression.test(testFeatures, testLabels))
 
-// plot({
-//     x: regression.mseHistory.reverse(),
-//     xLabel: 'Iteration #',
-//     yLabel: 'Mean Squared Error'
-// })
+plot({
+    x: regression.costHistory.reverse(),
+
+})
 
 // console.log('r2=', r2)
 
