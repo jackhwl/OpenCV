@@ -33,10 +33,10 @@ const regression = new LogisticRegression(features, _.flatMap(labels), {
 
 regression.train()
 
-regression.predict([[150, 200, 2.223]]).print()
+//regression.predict([[150, 200, 2.223]]).print()
 
 // // //regression.features.print()
-// console.log(regression.test(testFeatures, testLabels))
+console.log(regression.test(testFeatures, _.flatMap(testLabels)))
 
 // plot({
 //     x: regression.costHistory.reverse(),
