@@ -12,7 +12,7 @@ class LogisticRegression {
         this.weights = tf.zeros([this.features.shape[1], this.labels.shape[1]])
     }
     gradientDescent(features, labels) {
-        const currentGuesses = features.matMul(this.weights).sigmoid()
+        const currentGuesses = features.matMul(this.weights).softmax()
         const differences = currentGuesses.sub(labels)
 
         const slopes = features.transpose().matMul(differences).div(features.shape[0])
@@ -46,7 +46,7 @@ class LogisticRegression {
     }
 
     predict(observations) {
-        return this.processFeatures(observations).matMul(this.weights).sigmoid().greater(this.options.decisionBoundary).cast('float32')
+        return this.processFeatures(observations).matMul(this.weights).softmax().greater(this.options.decisionBoundary).cast('float32')
     }
 
     test(testFeatures, testLabels) {
@@ -81,7 +81,7 @@ class LogisticRegression {
     }
 
     recordCost() {
-        const guesses = this.features.matMul(this.weights).sigmoid()
+        const guesses = this.features.matMul(this.weights).softmax()
 
         const termOne = this.labels.transpose().matMul(guesses.log())
 
