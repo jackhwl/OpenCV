@@ -12,14 +12,12 @@ class LogisticRegression {
         this.weights = tf.zeros([this.features.shape[1], this.labels.shape[1]])
     }
     gradientDescent(features, labels) {
-        this.weights = tf.tidy(() => {
-            const currentGuesses = features.matMul(this.weights).softmax()
-            const differences = currentGuesses.sub(labels)
+        const currentGuesses = features.matMul(this.weights).softmax()
+        const differences = currentGuesses.sub(labels)
 
-            const slopes = features.transpose().matMul(differences).div(features.shape[0])
+        const slopes = features.transpose().matMul(differences).div(features.shape[0])
 
-            return this.weights.sub(slopes.mul(this.options.learningRate))
-        })
+        return this.weights.sub(slopes.mul(this.options.learningRate))
     }
 
     gradientDescent0() {
@@ -38,9 +36,12 @@ class LogisticRegression {
             for (let j=0; j<batchQuantity; j++) {
                 const startIndex = j * this.options.batchSize
                 const { batchSize } = this.options
-                const featureSlice = this.features.slice([startIndex, 0], [batchSize, -1])
-                const labelSlice = this.labels.slice([startIndex, 0], [batchSize, -1])
-                this.gradientDescent(featureSlice, labelSlice)
+
+                this.weights = tf.tidy(() => {
+                    const featureSlice = this.features.slice([startIndex, 0], [batchSize, -1])
+                    const labelSlice = this.labels.slice([startIndex, 0], [batchSize, -1])
+                    return this.gradientDescent(featureSlice, labelSlice)
+                })
             }
             this.recordCost()
             this.updateLearningRate()
