@@ -11,7 +11,7 @@ function extractColumns(data, columnNames) {
     return extracted
 }
 
-function loadCSV(filename, { converters = {}, shuffle = true, dataColumns = [], labelColumns = [] }) {
+function loadCSV(filename, { converters = {}, dataColumns = [], labelColumns = [], shuffle = true, splitTest = false }) {
     let data = fs.readFileSync(filename, { encoding: 'utf-8'})
     data = data.split('\n').map(row => row.split(','))
     data = data.map(row => _.dropRightWhile(row, val => val === '' || val === '\r'))
@@ -41,14 +41,28 @@ function loadCSV(filename, { converters = {}, shuffle = true, dataColumns = [], 
         labels = shuffleSeed.shuffle(labels, 'phrase')
     }
 
-    console.log(data, labels)
+    if (splitTest) {
+        const trainSize = _.isNumber(splitTest) ? splitTest : Math.floor(data.length / 2)
+        
+        return {
+            features: data.slice(0, trainSize),
+            labels: labels.slice(0, trainSize),
+            testFeatures: data.slice(trainSize),
+            testLabels: labels.slice(trainSize)
+        }
+    } else {
+        return { features: data, labels }
+    }
 }
 
-loadCSV('data.csv', {
+const { features, labels, testFeatures, testLabels } = loadCSV('data.csv', {
     dataColumns: ['height', 'value'],
     labelColumns: ['passed'],
     shuffle: true,
+    splitTest: false,
     converters: {
         passed: val => val == 'TRUE' ? 1 : 0
     }
 })
+
+console.log(features, labels, testFeatures, testLabels)
