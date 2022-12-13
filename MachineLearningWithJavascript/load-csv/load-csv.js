@@ -1,7 +1,16 @@
 const fs = require('fs')
 const _ = require('lodash')
 
-function loadCSV(filename, { converters = {} }) {
+function extractColumns(data, columnNames) {
+    const headers = _.first(data)
+
+    const indexes = _.map(columnNames, column => headers.indexOf(column))
+    const extracted = _.map(data, row => _.pullAt(row, indexes))
+
+    return extracted
+}
+
+function loadCSV(filename, { converters = {}, dataColumns = [], labelColumns = [] }) {
     let data = fs.readFileSync(filename, { encoding: 'utf-8'})
     data = data.split('\n').map(row => row.split(','))
     data = data.map(row => _.dropRightWhile(row, val => val === '' || val === '\r'))
@@ -20,10 +29,17 @@ function loadCSV(filename, { converters = {} }) {
             return _.isNaN(result) ? element : result;
         })
     })
-    console.log(data)
+    let labels = extractColumns(data, labelColumns)
+    data = extractColumns(data, dataColumns)
+
+    data.shift()
+    labels.shift()
+    console.log(data, labels)
 }
 
 loadCSV('data.csv', {
+    dataColumns: ['height', 'value'],
+    labelColumns: ['passed'],
     converters: {
         passed: val => val == 'TRUE'
     }
