@@ -1,5 +1,6 @@
 const fs = require('fs')
 const _ = require('lodash')
+const shuffleSeed = require('shuffle-seed')
 
 function extractColumns(data, columnNames) {
     const headers = _.first(data)
@@ -10,7 +11,7 @@ function extractColumns(data, columnNames) {
     return extracted
 }
 
-function loadCSV(filename, { converters = {}, dataColumns = [], labelColumns = [] }) {
+function loadCSV(filename, { converters = {}, shuffle = true, dataColumns = [], labelColumns = [] }) {
     let data = fs.readFileSync(filename, { encoding: 'utf-8'})
     data = data.split('\n').map(row => row.split(','))
     data = data.map(row => _.dropRightWhile(row, val => val === '' || val === '\r'))
@@ -34,13 +35,20 @@ function loadCSV(filename, { converters = {}, dataColumns = [], labelColumns = [
 
     data.shift()
     labels.shift()
+
+    if (shuffle) {
+        data = shuffleSeed.shuffle(data, 'phrase')
+        labels = shuffleSeed.shuffle(labels, 'phrase')
+    }
+
     console.log(data, labels)
 }
 
 loadCSV('data.csv', {
     dataColumns: ['height', 'value'],
     labelColumns: ['passed'],
+    shuffle: true,
     converters: {
-        passed: val => val == 'TRUE'
+        passed: val => val == 'TRUE' ? 1 : 0
     }
 })
