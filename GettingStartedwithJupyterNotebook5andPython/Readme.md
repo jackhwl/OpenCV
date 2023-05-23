@@ -15,3 +15,8 @@ class Person(object):
 ## Section 4: Leveraging Special Notebook Features
 * X C V Shift-V D,D A B
 * docstring ?
+## Section 5: Displaying Rich Content
+
+## Section 6: Extending the Notebook User Interface
+
+## Section 7: Collaborating on Notebooks
