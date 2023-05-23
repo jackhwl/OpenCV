@@ -12,3 +12,6 @@ class Person(object):
         return '{0}, {1}'.format(self.last_name, self.first_name)
 ```
 * !, _, panda
+## Section 4: Leveraging Special Notebook Features
+* X C V Shift-V D,D A B
+* docstring ?
